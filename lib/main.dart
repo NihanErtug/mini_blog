@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_blog/blocs/articles/article_blog.dart';
+import 'package:mini_blog/repositories/article_repository.dart';
 import 'package:mini_blog/screens/homepage.dart';
 import 'package:mini_blog/themes/dark_theme.dart';
 import 'package:mini_blog/themes/light_theme.dart';
@@ -36,12 +39,15 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: themeMode,
-      home: const HomePage(),
+    return BlocProvider(
+      create: (context) => ArticleBloc(articleRepository: ArticleRepository()),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: themeMode,
+        home: const HomePage(),
+      ),
     );
   }
 }

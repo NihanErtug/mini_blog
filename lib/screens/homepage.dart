@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:mini_blog/screens/add_blog.dart';
-import 'package:mini_blog/screens/data_blog.dart';
+import 'package:mini_blog/screens/blog_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-// veri yazmak, veri okumak, http cevabı beklemek ne kadar süreceği belli olmayan durumlardır. böyle durumlardar async(asenkron) işlem yapılır.
+// veri yazmak, veri okumak, http cevabı beklemek ne kadar süreceği belli olmayan durumlardır. böyle durumlarda async(asenkron) işlem yapılır.
 // async -> çalıştırıldığında alt satıra geçmeden cevabın gelmesini beklemediğimiz yani işlemi bloklamadığımız işlemler.
 // await -> cevabın ne zaman geleceğini bilmiyorum, cevap gelene kadar alt satıra geçmemem, beklemem lazım.
 
@@ -31,36 +32,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   */
-  Widget _buildBlogItem(Blog blog) {
-    return SingleChildScrollView(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                blog.thumbnail,
-                //width: 200,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(),
-              Text(
-                blog.title,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              Text(blog.author),
-              const SizedBox(height: 10),
-              Text(blog.content),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,23 +47,7 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Icons.add))
         ],
       ),
-      body: FutureBuilder<List<Blog>?>(
-        future: fetchBlogs(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Hata: ${snapshot.error}"));
-          } else if (snapshot.hasData) {
-            return ListView(
-              children:
-                  snapshot.data!.map((blog) => _buildBlogItem(blog)).toList(),
-            );
-          } else {
-            return const Center(child: Text("Bilgiler yüklenemedi."));
-          }
-        },
-      ),
+      body: const BlogList(),
 
       /*
             Switch(
